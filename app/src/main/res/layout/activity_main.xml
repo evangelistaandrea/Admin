@@ -24,7 +24,6 @@
             android:textColor="@color/white"
             android:textSize="40sp"
             android:textStyle="bold"
-            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             />
