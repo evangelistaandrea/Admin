@@ -49,7 +49,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,16 +59,6 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/bg_notes_title">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="Content Here"
-            android:textAlignment="textStart"
-            android:textColor="@color/white"
-            android:textSize="15sp"/>
-
-
-    </RelativeLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>
