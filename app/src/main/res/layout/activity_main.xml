@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/adminMain"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
@@ -11,35 +11,38 @@
     <RelativeLayout
         android:id="@+id/rectangle_container"
         android:layout_width="400dp"
-        android:layout_height="85dp"
-        android:layout_alignParentTop="true"
-        android:layout_margin="15dp"
-        android:background="@drawable/bg_admin">
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_admin"
+        android:elevation="50dp">
 
         <TextView
             android:id="@+id/admin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="30dp"
             android:text="ADMIN"
             android:textColor="@color/white"
             android:textSize="40sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            />
 
         <Button
             android:id="@+id/logout_btn"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
             android:backgroundTint="#1d1d1d"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
             android:text="LOG OUT"
-            android:textColor="#727272"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:cornerRadius="10dp" />
+            android:textColor="#727272"
+            app:cornerRadius="6dp"
+            />
 
     </RelativeLayout>
 
@@ -47,20 +50,13 @@
         android:id="@+id/approval_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rectangle_container"
-        android:layout_centerHorizontal="true"
-        android:layout_marginVertical="10dp"
         android:text="For Approval"
         android:textColor="#727272"
-        android:textSize="15sp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/approval_text"
-        android:layout_margin="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentBottom="true" />
+        android:textSize="15sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="125dp"
+        />
 
 </RelativeLayout>
+
+
