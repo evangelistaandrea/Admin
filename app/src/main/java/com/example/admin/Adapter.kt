@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class Adapter(
-    private var data: List<Notes>
+    private var data: List<Data>
 ) : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
