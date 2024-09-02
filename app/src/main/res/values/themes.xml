@@ -7,4 +7,6 @@
     <style name="ScreenBackground"><item name="android:background">@color/white</item></style>
 
     <style name="Theme.Admin" parent="Base.Theme.Admin" />
+    <style name="ScreenBackground"><item name="android:background">@color/pure</item></style>
+
 </resources>
