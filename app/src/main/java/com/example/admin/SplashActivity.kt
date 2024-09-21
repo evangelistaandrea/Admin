@@ -23,7 +23,7 @@ class SplashActivity : AppCompatActivity() {
         imageView.startAnimation(zoomInAnimation)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, SignInActivity::class.java)
+            val intent = Intent(this, AdminActivity::class.java)
             startActivity(intent)
             finish()
         }, 2500)

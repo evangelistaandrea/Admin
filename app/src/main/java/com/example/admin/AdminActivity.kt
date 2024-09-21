@@ -3,13 +3,16 @@ package com.example.admin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.admin.api.ApiClient
 import com.example.admin.api.ApiService
+import kotlinx.coroutines.launch
 import retrofit2.Callback
 import retrofit2.Call
 import retrofit2.Response
@@ -25,30 +28,38 @@ class AdminActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Ensure you have an Adapter class defined elsewhere
-        val adapter = Adapter(example())
-        recyclerView.adapter = adapter
+        fetchAdminData(recyclerView)
 
         this.logout.setOnClickListener {
             logoutUser()
         }
     }
 
-    private fun example(): List<Data> {
-        return listOf(
-            Data("Title 1", "Creator 1"),
-            Data("Title 2", "Creator 2"),
-            Data("Title 3", "Creator 3"),
-            Data("Title 4", "Creator 4"),
-            Data("Title 5", "Creator 5"),
-            Data("Title 6", "Creator 6"),
-            Data("Title 7", "Creator 7"),
-            Data("Title 8", "Creator 8"),
-            Data("Title 9", "Creator 9"),
-            Data("Title 10", "Creator 10")
-        )
-    }
+    private fun fetchAdminData(recyclerView: RecyclerView) {
+        lifecycleScope.launch {
+            val apiService = ApiClient.retrofit.create(ApiService::class.java)
 
+            try {
+                val response = apiService.getAdmin()  // Fetch admin data
+
+                if (response.isSuccessful) {
+                    val adminData = response.body() ?: emptyList()
+
+                    // Create Adapter and set it on the RecyclerView
+                    val adapter = Adapter(adminData.map {
+                        Data(it.title, it.public.toString())  // Assuming `Data` uses title and public status
+                    })
+                    recyclerView.adapter = adapter
+                } else {
+                    Toast.makeText(this@AdminActivity, "Error: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@AdminActivity, "Error fetching admin data: ${e.message}", Toast.LENGTH_SHORT).show()
+
+                Log.e("AdminActivity", "Error fetching admin data", e)
+            }
+        }
+    }
 
     private fun logoutUser() {
         val token = getToken() ?: run {
@@ -77,6 +88,7 @@ class AdminActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                Log.e("AdminActivity", "Error: ${response.errorBody()?.string()}")
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
