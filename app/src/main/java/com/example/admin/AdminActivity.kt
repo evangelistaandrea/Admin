@@ -47,7 +47,7 @@ class AdminActivity : AppCompatActivity() {
 
                     // Create Adapter and set it on the RecyclerView
                     val adapter = Adapter(adminData.map {
-                        Data(it.title, it.public.toString())  // Assuming `Data` uses title and public status
+                        Data(it.title, it.contents)  // Assuming `Data` uses title and public status
                     })
                     recyclerView.adapter = adapter
                 } else {
