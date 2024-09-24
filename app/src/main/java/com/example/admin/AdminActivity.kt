@@ -40,12 +40,12 @@ class AdminActivity : AppCompatActivity() {
 
                     // Create Adapter and set it on the RecyclerView
                     val adapter = Adapter(adminData.map {
-                        Data(it.title, it.contents)  // Assuming `Data` uses title and contents
+                        Data(it.title, it.creator)  // Assuming `Data` uses title and contents
                     }) { note ->
                         // Handle item click here, navigate to View_Admin
                         val intent = Intent(this@AdminActivity, View_Admin::class.java)
                         intent.putExtra("title", note.title)
-                        intent.putExtra("contents", note.creator)  // Assuming contents are in `creator`
+                        intent.putExtra("creator", note.creator)  // Assuming contents are in `creator`
                         startActivity(intent)
                     }
                     recyclerView.adapter = adapter
