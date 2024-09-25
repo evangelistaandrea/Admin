@@ -30,9 +30,8 @@ class AdminActivity : AppCompatActivity() {
 
     private fun fetchAdminData(recyclerView: RecyclerView) {
         lifecycleScope.launch {
-            val apiService = ApiClient.retrofit.create(ApiService::class.java)
-
             try {
+                val apiService = ApiClient.retrofit.create(ApiService::class.java)
                 val response = apiService.getAdmin()  // Fetch admin data
 
                 if (response.isSuccessful) {
@@ -40,12 +39,14 @@ class AdminActivity : AppCompatActivity() {
 
                     // Create Adapter and set it on the RecyclerView
                     val adapter = Adapter(adminData.map {
-                        Data(it.title, it.creator)  // Assuming `Data` uses title and contents
+                        Data(it.title, it.creator, it.contents, it.public)  // Assuming `Data` uses title and contents
                     }) { note ->
                         // Handle item click here, navigate to View_Admin
                         val intent = Intent(this@AdminActivity, View_Admin::class.java)
                         intent.putExtra("title", note.title)
                         intent.putExtra("creator", note.creator)  // Assuming contents are in `creator`
+                        intent.putExtra("contents", note.contents)
+                        intent.putExtra("public", note.public)
                         startActivity(intent)
                     }
                     recyclerView.adapter = adapter

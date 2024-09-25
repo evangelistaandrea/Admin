@@ -3,6 +3,8 @@ package com.example.admin.api
 import com.example.admin.api.requests_responses.LoginRequest
 import com.example.admin.api.requests_responses.LoginResponse
 import com.example.admin.api.requests_responses.admin.getAdminData
+import com.example.admin.api.requests_responses.publicnotes.postPublicNotesData
+import com.example.admin.api.requests_responses.publicnotes.respondPostPublicNotes
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -20,4 +22,6 @@ interface ApiService {
     fun logout(@Header("Authorization") authHeader: String): Call<Unit>
     @GET("admin")
     suspend fun getAdmin(): Response<List<getAdminData>>
+    @POST("public_notes")
+    suspend fun postPublicNotes(@Body request: postPublicNotesData): Response<respondPostPublicNotes>
 }
