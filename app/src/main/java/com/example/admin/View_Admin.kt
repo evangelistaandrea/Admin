@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 class View_Admin : AppCompatActivity() {
     private lateinit var tvtitle: TextView
     private lateinit var tvcontents: TextView
-    private lateinit var thumbsupView: View
+    private lateinit var ibthumbsup: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +25,7 @@ class View_Admin : AppCompatActivity() {
 
         tvtitle = findViewById(R.id.view_tvtitle)
         tvcontents = findViewById(R.id.view_tvcontents)
-        thumbsupView = findViewById(R.id.thumbs_up)
+        ibthumbsup = findViewById(R.id.thumbs_up)
 
         val intent = intent
         val title = intent.getStringExtra("title")
@@ -34,7 +35,7 @@ class View_Admin : AppCompatActivity() {
         tvtitle.setText(title)
         tvcontents.setText(contents)
 
-        thumbsupView.setOnClickListener {
+        ibthumbsup.setOnClickListener {
             val adminTitle = title.toString()
             val adminCreator = creator.toString()
             val adminContents = contents.toString()
