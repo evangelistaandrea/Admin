@@ -14,12 +14,10 @@ import com.example.admin.api.ApiService
 import kotlinx.coroutines.launch
 
 class AdminActivity : AppCompatActivity() {
-    lateinit var logout: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
-
 
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
