@@ -13,13 +13,13 @@ class Adapter(
 ) : RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val title: TextView = view.findViewById(R.id.title)
-        val creator: TextView = view.findViewById(R.id.creator)
+        private val title: TextView = view.findViewById(R.id.title)
+        private val creatorEmail: TextView = view.findViewById(R.id.creator)
 
         // Binding click listener to the item view
         fun bind(note: Data) {
             title.text = note.title
-            creator.text = note.creator
+            creatorEmail.text = note.contents
 
             // Set click listener on the entire item
             itemView.setOnClickListener {

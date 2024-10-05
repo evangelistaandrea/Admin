@@ -3,7 +3,6 @@ package com.example.admin
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +22,6 @@ class AdminActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         fetchAdminData(recyclerView)
-
     }
 
     private fun fetchAdminData(recyclerView: RecyclerView) {
@@ -37,12 +35,25 @@ class AdminActivity : AppCompatActivity() {
 
                     // Create Adapter and set it on the RecyclerView
                     val adapter = Adapter(adminData.map {
-                        Data(it.title, it.creator, it.contents, it.public)  // Assuming `Data` uses title and contents
+                        // Map fields correctly from API response
+                        Data(
+                            it.adminId,
+                            it.notesId,
+                            it.title,
+                            it.creatorUsername,
+                            it.creatorEmail,
+                            it.contents,
+                            it.public
+                        )
                     }) { note ->
                         // Handle item click here, navigate to View_Admin
+
                         val intent = Intent(this@AdminActivity, View_Admin::class.java)
+                        intent.putExtra("id", note.adminId)
+                        intent.putExtra("notesId", note.notesId)
                         intent.putExtra("title", note.title)
-                        intent.putExtra("creator", note.creator)  // Assuming contents are in `creator`
+                        intent.putExtra("creator_username", note.creatorUsername)
+                        intent.putExtra("creator_email", note.creatorEmail)// Assuming contents are in `creator`
                         intent.putExtra("contents", note.contents)
                         intent.putExtra("public", note.public)
                         startActivity(intent)
@@ -53,7 +64,6 @@ class AdminActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@AdminActivity, "Error fetching admin data: ${e.message}", Toast.LENGTH_SHORT).show()
-
                 Log.e("AdminActivity", "Error fetching admin data", e)
             }
         }
