@@ -1,6 +1,7 @@
 package com.example.admin
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.admin.api.ApiClient
 import com.example.admin.api.ApiService
@@ -18,6 +20,7 @@ class View_Admin : AppCompatActivity() {
     private lateinit var tvtitle: TextView
     private lateinit var tvcontents: TextView
     private lateinit var ibthumbsup: ImageButton
+    private lateinit var ibthumbsdown : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,7 @@ class View_Admin : AppCompatActivity() {
         tvtitle = findViewById(R.id.view_tvtitle)
         tvcontents = findViewById(R.id.view_tvcontents)
         ibthumbsup = findViewById(R.id.thumbs_up)
+        ibthumbsdown = findViewById(R.id.thumbs_down)
 
         val intent = intent
         val title = intent.getStringExtra("title")
@@ -41,6 +45,12 @@ class View_Admin : AppCompatActivity() {
             val adminContents = contents.toString()
             val public = true
             postPublicNotes(adminTitle, adminCreator, adminContents, public)
+            ibthumbsup.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+            ibthumbsup.isClickable = false
+        }
+        ibthumbsdown.setOnClickListener {
+            ibthumbsdown.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.white))
+            ibthumbsdown.isClickable = false
         }
     }
 
