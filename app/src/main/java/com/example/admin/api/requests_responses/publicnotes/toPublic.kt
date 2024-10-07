@@ -1,15 +1,18 @@
 package com.example.admin.api.requests_responses.publicnotes
 
-class postPublicNotesData(
-    val title: String,
-    val creator: String,
-    val contents: String,
+
+data class UpdateNoteRequest(
     val public: Boolean,
+    val to_public: Boolean
 )
 
-class respondPostPublicNotes(
-    val title: String,
-    val creator: String,
-    val contents: String,
+data class UpdateNoteResponse(
+    val message: String,
+    val note: Note
+)
+
+data class Note(
+    val id: Int,
     val public: Boolean,
+    val to_public: Boolean
 )

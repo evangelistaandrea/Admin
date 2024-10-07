@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.admin.api.ApiClient
 import com.example.admin.api.ApiService
-import com.example.admin.api.requests_responses.publicnotes.postPublicNotesData
+import com.example.admin.api.requests_responses.publicnotes.UpdateNoteRequest
+
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class View_Admin : AppCompatActivity() {
     private lateinit var tvtitle: TextView
@@ -31,36 +33,50 @@ class View_Admin : AppCompatActivity() {
         val title = intent.getStringExtra("title")
         val contents = intent.getStringExtra("contents")
         val creator = intent.getStringExtra("creator")
+        val noteId = intent.getIntExtra("notesId", -1)  // Make sure the note ID is passed in the intent
+
+
 
         tvtitle.setText(title)
         tvcontents.setText(contents)
 
         ibthumbsup.setOnClickListener {
-            val adminTitle = title.toString()
-            val adminCreator = creator.toString()
-            val adminContents = contents.toString()
-            val public = true
-            postPublicNotes(adminTitle, adminCreator, adminContents, public)
+            if(noteId != -1){
+                postPublicNotes(noteId)
+            }
+
         }
     }
 
-    private fun postPublicNotes(title: String, creator: String, contents: String, public: Boolean) {
+    private fun postPublicNotes(noteId: Int) {
         lifecycleScope.launch {
             try {
+                Log.d("View_Admin_tester", "Updating note with ID: $noteId")
+                // Prepare the request
                 val apiService = ApiClient.retrofit.create(ApiService::class.java)
-                val post_publicNotes = postPublicNotesData(title, creator, contents, public)
-                val response = apiService.postPublicNotes(post_publicNotes)
+                val request = UpdateNoteRequest(public = true, to_public = false)  // Set desired values for public & to_public
+
+                // Make the API call
+                val response = apiService.updateNoteAsAdmin(noteId, request)
+
                 if (response.isSuccessful) {
-                    Toast.makeText(this@View_Admin, "Public notes posted successfully", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@View_Admin, AdminActivity::class.java)
-                    startActivity(intent)
+                    // Handle successful response
+                    Toast.makeText(this@View_Admin, "Note updated successfully", Toast.LENGTH_LONG).show()
+                    Log.d("View_Admin", "Note updated successfully: ${response.code()}")
                 } else {
-                    Toast.makeText(this@View_Admin, "Error: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                    // Handle error response
+                    Log.e("View_Admin", "Failed to update note: ${response.code()} - ${response.errorBody()?.string()}")
+                    Toast.makeText(this@View_Admin, "Failed to update the note: ${response.code()}", Toast.LENGTH_LONG).show()
                 }
+            } catch (e: HttpException) {
+                Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
+                Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("View_Admin", "Error posting public notes: ${e.message}")
+                Toast.makeText(this@View_Admin, "An error occurred", Toast.LENGTH_LONG).show()
             }
         }
     }
+
 }
