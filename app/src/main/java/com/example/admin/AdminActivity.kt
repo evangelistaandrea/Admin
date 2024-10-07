@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.admin.api.ApiClient
 import com.example.admin.api.ApiService
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import kotlinx.coroutines.withContext
 
 class AdminActivity : AppCompatActivity() {
     lateinit var layoutManager: LinearLayoutManager
+    lateinit var swipelayout: SwipeRefreshLayout
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: Adapter  // Declare Adapter
 
@@ -29,6 +31,14 @@ class AdminActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager  // Set layout manager
 
         // Fetch the admin data and populate RecyclerView
+
+       swipelayout = findViewById(R.id.swipe_refresh)
+
+       swipelayout.setOnRefreshListener {
+           fetchAdminData()
+           swipelayout.isRefreshing = false
+       }
+
         fetchAdminData()
     }
 
