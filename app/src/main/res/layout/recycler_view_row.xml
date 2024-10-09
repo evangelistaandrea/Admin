@@ -43,7 +43,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline19" />
 
             <TextView
-                android:id="@+id/creator"
+                android:id="@+id/tvEmail"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:fontFamily="@font/noto_sans"

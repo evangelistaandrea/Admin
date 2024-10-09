@@ -6,14 +6,12 @@ import com.example.admin.api.requests_responses.publicnotes.UpdateNoteResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
-
-
-
 
     @GET("pending_notes")
     suspend fun getPendingNotes(): Response<List<getAdminData>>
@@ -23,4 +21,5 @@ interface ApiService {
         @Path("noteId") noteId: Int,
         @Body request: UpdateNoteRequest
     ): Response<UpdateNoteResponse>
+
 }

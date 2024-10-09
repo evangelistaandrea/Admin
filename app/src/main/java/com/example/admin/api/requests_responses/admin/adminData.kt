@@ -3,6 +3,7 @@ package com.example.admin.api.requests_responses.admin
 import com.google.gson.annotations.SerializedName
 
 class getAdminData(
+    val id: Int,
     @SerializedName("notes_id")
     val notesId: Int,
     @SerializedName("user_id")

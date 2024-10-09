@@ -22,8 +22,7 @@ class View_Admin : AppCompatActivity() {
     private lateinit var tvEmail : TextView
     private lateinit var tvUsername : TextView
     private lateinit var tvDate : TextView
-
-
+    private lateinit var ibthumbsdown : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +31,7 @@ class View_Admin : AppCompatActivity() {
         tvtitle = findViewById(R.id.view_tvtitle)
         tvcontents = findViewById(R.id.view_tvcontents)
         ibthumbsup = findViewById(R.id.thumbs_up)
+        ibthumbsdown = findViewById(R.id.thumbs_down)
         tvEmail = findViewById(R.id.tvEmail)
         tvDate = findViewById(R.id.tvDate)
         tvUsername = findViewById(R.id.tvUsername)
@@ -46,10 +46,23 @@ class View_Admin : AppCompatActivity() {
         val toPublic = intent.getBooleanExtra("to_public", false) ?: false
         val noteId = intent.getIntExtra("notes_id", -1)  // Make sure the note ID is passed in the intent
         val userId = intent.getIntExtra("user_id", -1)
+        val adminId = intent.getIntExtra("id", -1)
 
+        Log.e("View_Admin", "Admin ID: $adminId")
 
+        tvDate.setText(createdAt)
+        tvUsername.setText(creatorUsername)
+        tvEmail.setText(creatorEmail)
         tvtitle.setText(title)
         tvcontents.setText(contents)
+
+        ibthumbsdown.setOnClickListener {
+            Log.d("View_Admin", "Note ID: $noteId")
+            if(noteId != -1){
+                noteDisapprovedToBePublic(noteId)
+            }
+
+        }
 
         ibthumbsup.setOnClickListener {
             Log.d("View_Admin", "Note ID: $noteId")
@@ -71,7 +84,7 @@ class View_Admin : AppCompatActivity() {
                     val intent = Intent(this@View_Admin, AdminActivity::class.java)
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this@View_Admin, response.message(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -82,4 +95,29 @@ class View_Admin : AppCompatActivity() {
             }
         }
     }
+
+    private fun noteDisapprovedToBePublic(noteId: Int){
+        lifecycleScope.launch {
+            try {
+                val apiService = ApiClient.retrofit.create(ApiService::class.java)
+                val request = UpdateNoteRequest(public = false, to_public = false)
+                val response = apiService.updateNoteAsAdmin(noteId, request)
+                if (response.isSuccessful) {
+                    Toast.makeText(this@View_Admin, "Note has been disapproved", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this@View_Admin, AdminActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("View_Admin", "Error posting public notes: ${e.message}")
+            } catch (e: HttpException) {
+                Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
+                Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+
 }
