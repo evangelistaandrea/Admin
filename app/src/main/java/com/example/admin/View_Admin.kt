@@ -41,7 +41,7 @@ class View_Admin : AppCompatActivity() {
         val creatorEmail = intent.getStringExtra("creator_email")
         val creatorUsername =  intent.getStringExtra("creator_username")
         val contents = intent.getStringExtra("contents")
-        val createdAt = intent.getStringExtra("created_at")
+        val updatedAt = intent.getStringExtra("updated_at")
         val public = intent.getBooleanExtra("public", false)
         val toPublic = intent.getBooleanExtra("to_public", false) ?: false
         val noteId = intent.getIntExtra("notes_id", -1)  // Make sure the note ID is passed in the intent
@@ -50,7 +50,7 @@ class View_Admin : AppCompatActivity() {
 
         Log.e("View_Admin", "Admin ID: $adminId")
 
-        tvDate.setText(createdAt)
+        tvDate.setText(updatedAt)
         tvUsername.setText(creatorUsername)
         tvEmail.setText(creatorEmail)
         tvtitle.setText(title)

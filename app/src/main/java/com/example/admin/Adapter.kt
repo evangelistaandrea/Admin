@@ -44,13 +44,13 @@ class Adapter(
 
         holder.contents.setOnClickListener {
             val intent = Intent(it.context, View_Admin::class.java)
-            val updatedAtDate = pendingData.createdAt.substringBefore("t")
+            val updatedAtDate = pendingData.updatedAt.substringBefore("T")
             intent.putExtra("id", pendingData.id)
             intent.putExtra("title", pendingData.title)
             intent.putExtra("creator_username", pendingData.creatorUsername)
             intent.putExtra("creator_email", pendingData.creatorEmail)
             intent.putExtra("contents", pendingData.contents)
-            intent.putExtra("created_at", updatedAtDate)
+            intent.putExtra("updated_at", updatedAtDate)
             intent.putExtra("public", pendingData.public)
             intent.putExtra("notes_id", pendingData.notesId)
             intent.putExtra("to_public", pendingData.toPublic)

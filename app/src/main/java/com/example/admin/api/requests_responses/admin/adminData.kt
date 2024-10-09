@@ -17,6 +17,6 @@ class getAdminData(
     val public: Boolean,
     @SerializedName("to_public")
     val toPublic: Boolean,
-    @SerializedName("created_at")
-    val createdAt: String
+    @SerializedName("updated_at")
+    val updatedAt: String
 )
