@@ -19,6 +19,11 @@ class View_Admin : AppCompatActivity() {
     private lateinit var tvtitle: TextView
     private lateinit var tvcontents: TextView
     private lateinit var ibthumbsup: ImageButton
+    private lateinit var tvEmail : TextView
+    private lateinit var tvUsername : TextView
+    private lateinit var tvDate : TextView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +32,9 @@ class View_Admin : AppCompatActivity() {
         tvtitle = findViewById(R.id.view_tvtitle)
         tvcontents = findViewById(R.id.view_tvcontents)
         ibthumbsup = findViewById(R.id.thumbs_up)
+        tvEmail = findViewById(R.id.tvEmail)
+        tvDate = findViewById(R.id.tvDate)
+        tvUsername = findViewById(R.id.tvUsername)
 
         val intent = intent
         val title = intent.getStringExtra("title")

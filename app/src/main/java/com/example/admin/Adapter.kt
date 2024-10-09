@@ -17,7 +17,7 @@ class Adapter(
     inner class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.title)
         val contents: ConstraintLayout = view.findViewById(R.id.layout_contents)
-        val creator: TextView = view.findViewById(R.id.creator)
+        val creator: TextView = view.findViewById(R.id.tvEmail)
 
        /* Binding click listener to the item view
         fun bind(note: Data) {
