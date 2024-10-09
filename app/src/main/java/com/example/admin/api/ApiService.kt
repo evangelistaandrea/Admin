@@ -15,8 +15,8 @@ interface ApiService {
 
 
 
-    @GET("admin")
-    suspend fun getAdmin(): Response<List<getAdminData>>
+    @GET("pending_notes")
+    suspend fun getPendingNotes(): Response<List<getAdminData>>
 
     @PUT("adminUpdater/{noteId}")
     suspend fun updateNoteAsAdmin(

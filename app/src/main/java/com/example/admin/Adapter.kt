@@ -38,22 +38,25 @@ class Adapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val note = adminData[position]
-        holder.title.text = note.title
-        holder.creator.text = note.creator_username
+        val pendingData = adminData[position]
+        holder.title.text = pendingData.title
+        holder.creator.text = pendingData.creatorUsername
 
         holder.contents.setOnClickListener {
             val intent = Intent(it.context, View_Admin::class.java)
-            intent.putExtra("title", note.title)
-            intent.putExtra("creator", note.creator_username)  // Assuming contents are in `creator`
-            intent.putExtra("contents", note.contents)
-            intent.putExtra("public", note.public)
-            intent.putExtra("notesId", note.notes_id)
-
+            val updatedAtDate = pendingData.createdAt.substringBefore("t")
+            intent.putExtra("title", pendingData.title)
+            intent.putExtra("creator_username", pendingData.creatorUsername)
+            intent.putExtra("creator_email", pendingData.creatorEmail)
+            intent.putExtra("contents", pendingData.contents)
+            intent.putExtra("created_at", updatedAtDate)
+            intent.putExtra("public", pendingData.public)
+            intent.putExtra("notes_id", pendingData.notesId)
+            intent.putExtra("to_public", pendingData.toPublic)
+            intent.putExtra("user_id", pendingData.userId)
             it.context.startActivity(intent)
         }
 
     }
-
     override fun getItemCount(): Int = adminData.size
 }

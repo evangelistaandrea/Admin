@@ -47,7 +47,7 @@ class AdminActivity : AppCompatActivity() {
             try {
                 val apiService = ApiClient.retrofit.create(ApiService::class.java)
                 val response = withContext(Dispatchers.IO) {
-                    apiService.getAdmin() // Synchronous call to get admin data
+                    apiService.getPendingNotes() // Synchronous call to get admin data
                 }
 
                 if (response.isSuccessful) {
