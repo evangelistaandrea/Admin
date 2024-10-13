@@ -1,13 +1,13 @@
 package com.example.admin.api
 
 import com.example.admin.api.requests_responses.admin.getAdminData
+import com.example.admin.api.requests_responses.notifications.PostNotification
 import com.example.admin.api.requests_responses.publicnotes.UpdateNoteRequest
 import com.example.admin.api.requests_responses.publicnotes.UpdateNoteResponse
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
@@ -22,4 +22,9 @@ interface ApiService {
         @Body request: UpdateNoteRequest
     ): Response<UpdateNoteResponse>
 
+    @POST("noteDecline")
+    suspend fun postNoteDecline(@Body request: PostNotification): Response<Any>
+
+    @POST("sendApproveEmail")
+    suspend fun postNoteAccepted(@Body request: PostNotification): Response<Any>
 }

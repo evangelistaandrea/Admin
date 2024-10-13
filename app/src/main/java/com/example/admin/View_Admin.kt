@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.admin.api.ApiClient
 import com.example.admin.api.ApiService
+import com.example.admin.api.requests_responses.notifications.PostNotification
 import com.example.admin.api.requests_responses.publicnotes.UpdateNoteRequest
 
 import kotlinx.coroutines.launch
@@ -59,27 +60,30 @@ class View_Admin : AppCompatActivity() {
         ibthumbsdown.setOnClickListener {
             Log.d("View_Admin", "Note ID: $noteId")
             if(noteId != -1){
-                noteDisapprovedToBePublic(noteId)
+                if (creatorEmail != null && title != null) {
+                    noteDisapprovedToBePublic(noteId, creatorEmail, title)
+                }
             }
-
         }
 
         ibthumbsup.setOnClickListener {
             Log.d("View_Admin", "Note ID: $noteId")
             if(noteId != -1){
-                noteApprovedToBePublic(noteId)
+                if (creatorEmail != null && title != null) {
+                    noteApprovedToBePublic(noteId, creatorEmail, title )
+                }
             }
-
         }
     }
 
-    private fun noteApprovedToBePublic(noteId: Int){
+    private fun noteApprovedToBePublic(noteId: Int, email: String, title: String){
         lifecycleScope.launch {
             try {
                 val apiService = ApiClient.retrofit.create(ApiService::class.java)
                 val request = UpdateNoteRequest(public = true, to_public = false)
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
+                    sendNotificationNoteApproved(email, title)
                     Toast.makeText(this@View_Admin, "Note approved successfully", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@View_Admin, AdminActivity::class.java)
                     startActivity(intent)
@@ -96,13 +100,14 @@ class View_Admin : AppCompatActivity() {
         }
     }
 
-    private fun noteDisapprovedToBePublic(noteId: Int){
+    private fun noteDisapprovedToBePublic(noteId: Int, email: String, title: String){
         lifecycleScope.launch {
             try {
                 val apiService = ApiClient.retrofit.create(ApiService::class.java)
                 val request = UpdateNoteRequest(public = false, to_public = false)
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
+                    sendNotificationNoteDecline(email, title)
                     Toast.makeText(this@View_Admin, "Note has been disapproved", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@View_Admin, AdminActivity::class.java)
                     startActivity(intent)
@@ -119,5 +124,41 @@ class View_Admin : AppCompatActivity() {
         }
     }
 
+    private fun sendNotificationNoteApproved(email: String, title: String) {
+        val apiService = ApiClient.retrofit.create(ApiService::class.java)
+        val notificationRequest = PostNotification(email, title)
+        lifecycleScope.launch {
+            try {
+                val response = apiService.postNoteAccepted(notificationRequest)
+                if (response.isSuccessful) {
+                    Log.d("View_Admin", "Notification sent successfully")
+                } else {
+                    Log.e("View_Admin", "Failed to send notification: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("View_Admin", "Error sending notification: ${e.message}")
+            } catch (e: HttpException) {
+                Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
+            }
+        }
+    }
 
+    private fun sendNotificationNoteDecline(email: String, title: String) {
+        val apiService = ApiClient.retrofit.create(ApiService::class.java)
+        val notificationRequest = PostNotification(email, title)
+        lifecycleScope.launch {
+            try {
+                val response = apiService.postNoteDecline(notificationRequest)
+                if (response.isSuccessful) {
+                    Log.d("View_Admin", "Notification sent successfully")
+                } else {
+                    Log.e("View_Admin", "Failed to send notification: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("View_Admin", "Error sending notification: ${e.message}")
+            } catch (e: HttpException) {
+                Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
+            }
+        }
+    }
 }
