@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Admin"
         tools:targetApi="31">
         <activity
-            android:name=".View_Admin"
+            android:name=".ViewAdminActivity"
             android:exported="false" />
         <activity
             android:name=".AdminActivity"

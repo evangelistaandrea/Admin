@@ -4,7 +4,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +42,7 @@ class Adapter(
         holder.creatorEmail.text = pendingData.creatorEmail
 
         holder.contents.setOnClickListener {
-            val intent = Intent(it.context, View_Admin::class.java)
+            val intent = Intent(it.context, ViewAdminActivity::class.java)
             val updatedAtDate = pendingData.updatedAt.substringBefore("T")
             intent.putExtra("id", pendingData.id)
             intent.putExtra("title", pendingData.title)

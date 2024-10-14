@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context=".View_Admin">
+    tools:context=".ViewAdminActivity">
 
     <FrameLayout
         android:id="@+id/rectangle_container"
