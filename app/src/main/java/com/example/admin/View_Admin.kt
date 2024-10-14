@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.admin.api.ApiClient
 import com.example.admin.api.ApiService
 import com.example.admin.api.requests_responses.notifications.PostNotification
+import com.example.admin.api.requests_responses.notifications.PostNotificationDB
 import com.example.admin.api.requests_responses.publicnotes.UpdateNoteRequest
 
 import kotlinx.coroutines.launch
@@ -84,6 +85,7 @@ class View_Admin : AppCompatActivity() {
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
                     sendNotificationNoteApproved(email, title)
+                    postNotificationDBNoteAccepted(noteId, email,"Your note $title has been approved")
                     Toast.makeText(this@View_Admin, "Note approved successfully", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@View_Admin, AdminActivity::class.java)
                     startActivity(intent)
@@ -108,6 +110,7 @@ class View_Admin : AppCompatActivity() {
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
                     sendNotificationNoteDecline(email, title)
+                    postNotificationDBNoteDecline(noteId, email,"Your note $title has been disapproved")
                     Toast.makeText(this@View_Admin, "Note has been disapproved", Toast.LENGTH_LONG).show()
                     val intent = Intent(this@View_Admin, AdminActivity::class.java)
                     startActivity(intent)
@@ -157,6 +160,48 @@ class View_Admin : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e("View_Admin", "Error sending notification: ${e.message}")
             } catch (e: HttpException) {
+                Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
+            }
+        }
+    }
+
+    private fun postNotificationDBNoteAccepted(notesId: Int, email: String, message: String) {
+        val apiService = ApiClient.retrofit.create(ApiService::class.java)
+        val notificationRequest = PostNotificationDB(notesId, email, message)
+        lifecycleScope.launch {
+            try {
+                val response = apiService.postNoteAcceptedDB(notificationRequest)
+                if (response.isSuccessful) {
+                    Log.d("View_Admin", "Notification sent successfully")
+            } else {
+                    Log.e("View_Admin", "Failed to send notification: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
+            Log.e("View_Admin", "Error sending notification: ${e.message}")
+        } catch (e: HttpException) {
+            Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
+            Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
+            }
+        }
+    }
+
+    private fun postNotificationDBNoteDecline(notesId: Int, email: String, message: String) {
+        val apiService = ApiClient.retrofit.create(ApiService::class.java)
+        val notificationRequest = PostNotificationDB(notesId, email, message)
+        lifecycleScope.launch {
+            try {
+                val response = apiService.postNoteDeclineDB(notificationRequest)
+                if (response.isSuccessful) {
+                    Log.d("View_Admin", "Notification sent successfully")
+                } else {
+                    Log.e("View_Admin", "Failed to send notification: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
+                Log.e("View_Admin", "Error sending notification: ${e.message}")
+            } catch (e: HttpException) {
+                Toast.makeText(this@View_Admin, "Failed to update the note", Toast.LENGTH_LONG).show()
                 Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
             }
         }

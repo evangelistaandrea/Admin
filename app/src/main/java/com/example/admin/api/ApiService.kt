@@ -2,6 +2,8 @@ package com.example.admin.api
 
 import com.example.admin.api.requests_responses.admin.getAdminData
 import com.example.admin.api.requests_responses.notifications.PostNotification
+import com.example.admin.api.requests_responses.notifications.PostNotificationDB
+import com.example.admin.api.requests_responses.notifications.ResponseNotificationDB
 import com.example.admin.api.requests_responses.publicnotes.UpdateNoteRequest
 import com.example.admin.api.requests_responses.publicnotes.UpdateNoteResponse
 import retrofit2.Response
@@ -27,4 +29,10 @@ interface ApiService {
 
     @POST("sendApproveEmail")
     suspend fun postNoteAccepted(@Body request: PostNotification): Response<Any>
+
+    @POST("noteAccepted")
+    suspend fun postNoteAcceptedDB(@Body request: PostNotificationDB): Response<ResponseNotificationDB>
+
+    @POST("noteDecline")
+    suspend fun postNoteDeclineDB(@Body request: PostNotificationDB): Response<ResponseNotificationDB>
 }
