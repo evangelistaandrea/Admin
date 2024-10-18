@@ -50,7 +50,7 @@ class ViewAdminActivity : AppCompatActivity() {
         //val userId = intent.getIntExtra("user_id", -1)
         val adminId = intent.getIntExtra("id", -1)
 
-        Log.e("View_Admin", "Admin ID: $adminId")
+        Log.e("View_Admin", "Admin ID: $adminId,$creatorEmail")
 
         tvDate.text = updatedAt
         tvUsername.text = creatorUsername
