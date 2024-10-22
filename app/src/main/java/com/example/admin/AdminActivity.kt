@@ -76,4 +76,8 @@ class AdminActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onBackPressed() {
+       finishAffinity()
+    }
 }
