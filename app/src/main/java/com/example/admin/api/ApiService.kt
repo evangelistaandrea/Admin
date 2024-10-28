@@ -24,11 +24,12 @@ interface ApiService {
         @Body request: UpdateNoteRequest
     ): Response<UpdateNoteResponse>
 
-    @POST("noteDecline")
+    @POST("sendDeclineEmail")
     suspend fun postNoteDecline(@Body request: PostNotification): Response<Any>
 
     @POST("sendApproveEmail")
     suspend fun postNoteAccepted(@Body request: PostNotification): Response<Any>
+
 
     @POST("noteAccepted")
     suspend fun postNoteAcceptedDB(@Body request: PostNotificationDB): Response<ResponseNotificationDB>
