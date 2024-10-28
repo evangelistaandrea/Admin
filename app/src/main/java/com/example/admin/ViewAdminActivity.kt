@@ -65,6 +65,7 @@ class ViewAdminActivity : AppCompatActivity() {
                     noteDisapprovedToBePublic(noteId, creatorEmail, title)
                 }
             }
+            finish()
         }
 
         ibthumbsup.setOnClickListener {
@@ -74,6 +75,7 @@ class ViewAdminActivity : AppCompatActivity() {
                     noteApprovedToBePublic(noteId, creatorEmail, title )
                 }
             }
+            finish()
         }
     }
 
