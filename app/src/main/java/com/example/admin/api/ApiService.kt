@@ -30,7 +30,6 @@ interface ApiService {
     @POST("sendApproveEmail")
     suspend fun postNoteAccepted(@Body request: PostNotification): Response<Any>
 
-
     @POST("noteAccepted")
     suspend fun postNoteAcceptedDB(@Body request: PostNotificationDB): Response<ResponseNotificationDB>
 

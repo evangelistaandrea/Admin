@@ -1,9 +1,13 @@
 package com.example.admin.api.requests_responses.publicnotes
 
+import com.google.gson.annotations.SerializedName
+
 
 data class UpdateNoteRequest(
-    val public: Boolean,
-    val to_public: Boolean
+    @SerializedName("is_public")
+    val isPublic: Boolean,
+    @SerializedName("to_public")
+    val toPublic: Boolean
 )
 
 data class UpdateNoteResponse(

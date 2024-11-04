@@ -83,7 +83,7 @@ class ViewAdminActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val apiService = ApiClient.retrofit.create(ApiService::class.java)
-                val request = UpdateNoteRequest(public = true, to_public = false)
+                val request = UpdateNoteRequest(isPublic = true, toPublic = false)
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
                     sendNotificationNoteApproved(email, title)
@@ -108,7 +108,7 @@ class ViewAdminActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val apiService = ApiClient.retrofit.create(ApiService::class.java)
-                val request = UpdateNoteRequest(public = false, to_public = false)
+                val request = UpdateNoteRequest(isPublic = false, toPublic = false)
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
                     sendNotificationNoteDecline(email, title)
