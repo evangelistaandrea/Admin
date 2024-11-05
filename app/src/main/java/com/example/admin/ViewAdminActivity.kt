@@ -51,8 +51,8 @@ class ViewAdminActivity : AppCompatActivity() {
         val adminId = intent.getIntExtra("id", -1)
 
         Log.e("View_Admin", "Admin ID: $adminId,$creatorEmail")
-
-        tvDate.text = updatedAt
+        val intentToAdminHome = Intent(this@ViewAdminActivity, AdminActivity::class.java)
+            tvDate.text = updatedAt
         tvUsername.text = creatorUsername
         tvEmail.text = creatorEmail
         tvtitle.text = title
@@ -63,6 +63,8 @@ class ViewAdminActivity : AppCompatActivity() {
             if(noteId != -1){
                 if (creatorEmail != null && title != null) {
                     noteDisapprovedToBePublic(noteId, creatorEmail, title)
+                    postNotificationDBNoteDecline(noteId, creatorEmail,"Your note $title has been disapproved")
+                    startActivity(intentToAdminHome)
                 }
             }
             finish()
@@ -73,6 +75,8 @@ class ViewAdminActivity : AppCompatActivity() {
             if(noteId != -1){
                 if (creatorEmail != null && title != null) {
                     noteApprovedToBePublic(noteId, creatorEmail, title )
+                    postNotificationDBNoteAccepted(noteId, creatorEmail,"Your note $title has been approved")
+                    startActivity(intentToAdminHome)
                 }
             }
             finish()
@@ -87,10 +91,9 @@ class ViewAdminActivity : AppCompatActivity() {
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
                     sendNotificationNoteApproved(email, title)
-                    postNotificationDBNoteAccepted(noteId, email,"Your note $title has been approved")
+
                     Toast.makeText(this@ViewAdminActivity, "Note approved successfully", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this@ViewAdminActivity, AdminActivity::class.java)
-                    startActivity(intent)
+
                 } else {
                     Toast.makeText(this@ViewAdminActivity, "Failed to update the note", Toast.LENGTH_LONG).show()
                 }
@@ -112,18 +115,16 @@ class ViewAdminActivity : AppCompatActivity() {
                 val response = apiService.updateNoteAsAdmin(noteId, request)
                 if (response.isSuccessful) {
                     sendNotificationNoteDecline(email, title)
-                    postNotificationDBNoteDecline(noteId, email,"Your note $title has been disapproved")
                     Toast.makeText(this@ViewAdminActivity, "Note has been disapproved", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this@ViewAdminActivity, AdminActivity::class.java)
-                    startActivity(intent)
                 } else {
-                    Toast.makeText(this@ViewAdminActivity, "Failed to update the note", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ViewAdminActivity, "Failed to send notification", Toast.LENGTH_LONG).show()
                 }
+
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("View_Admin", "Error posting public notes: ${e.message}")
+                Log.e("View_Admin Exception", "Error posting public notes: ${e.message}")
             } catch (e: HttpException) {
-                Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
+                Log.e("View_Admin HTTP", "HTTP error: ${e.response()?.errorBody()?.string()}")
                 Toast.makeText(this@ViewAdminActivity, "Failed to update the note", Toast.LENGTH_LONG).show()
             }
         }
@@ -201,7 +202,7 @@ class ViewAdminActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@ViewAdminActivity, "Failed to update the note", Toast.LENGTH_LONG).show()
-                Log.e("View_Admin", "Error sending notification: ${e.message}")
+                Log.e("View_Admin", "Error sending notification e: ${e.message}")
             } catch (e: HttpException) {
                 Toast.makeText(this@ViewAdminActivity, "Failed to update the note", Toast.LENGTH_LONG).show()
                 Log.e("View_Admin", "HTTP error: ${e.response()?.errorBody()?.string()}")
