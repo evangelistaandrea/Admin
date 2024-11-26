@@ -52,7 +52,7 @@ class ViewAdminActivity : AppCompatActivity() {
 
         Log.e("View_Admin", "Admin ID: $adminId,$creatorEmail")
         val intentToAdminHome = Intent(this@ViewAdminActivity, AdminActivity::class.java)
-            tvDate.text = updatedAt
+        tvDate.text = updatedAt
         tvUsername.text = creatorUsername
         tvEmail.text = creatorEmail
         tvtitle.text = title
